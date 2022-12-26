@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "586624405307",
+    "project_id": "vedha-bc28b",
+    "storage_bucket": "vedha-bc28b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586624405307:android:5852b3b17f786cefd6711e",
+        "android_client_info": {
+          "package_name": "com.example.vedha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "586624405307-43mctqjp3hco393mhvlrtli422659d5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0hgsDXvScy9G8bYsJnc7pjVe_ChWw9IQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "586624405307-43mctqjp3hco393mhvlrtli422659d5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
