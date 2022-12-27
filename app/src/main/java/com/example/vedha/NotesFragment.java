@@ -24,7 +24,7 @@ public class NotesFragment extends Fragment {
 
         addNoteBtn.setOnClickListener((v)->{
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, noteDetailsFragment, "findThisFragment")
+                    .add(R.id.container, noteDetailsFragment, "findThisFragment")
                     .addToBackStack(null)
                     .commit();
         });

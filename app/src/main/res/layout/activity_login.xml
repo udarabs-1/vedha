@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginVertical= "1dp"
         android:id="@+id/login_icon"
-        android:src="@drawable/signin"  />
+        android:src="@drawable/signin2"  />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
