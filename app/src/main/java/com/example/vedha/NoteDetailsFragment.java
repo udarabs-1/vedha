@@ -40,6 +40,8 @@ public class NoteDetailsFragment extends Fragment {
         return root1;
     }
 
+
+
     void saveNote() {
         String noteTitle = titleEditText.getText().toString();
         String noteContent = contentEditText.getText().toString();
