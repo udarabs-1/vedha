@@ -1,2 +1,3 @@
 rootProject.name = "vedha"
 include ':app'
+include ':lib_task_api'
