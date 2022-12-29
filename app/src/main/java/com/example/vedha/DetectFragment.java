@@ -57,9 +57,6 @@ public class DetectFragment extends Fragment {
     Button galleryBtn;
     Button cameraBtn;
 
-    private static final int IMAGE_PICK_CODE = 1000;
-    private static final int PERMISSION_CODE = 1001;
-
     Uri image_uri;
     private static final int RESULT_LOAD_IMAGE = 123;
     public static final int IMAGE_CAPTURE_CODE = 654;

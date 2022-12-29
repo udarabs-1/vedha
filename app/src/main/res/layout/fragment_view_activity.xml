@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewActivity"
+    android:orientation="vertical"
+    android:overScrollMode="ifContentScrolls"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image_single_view_activity"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="20dp"
+                android:scaleType="fitXY"
+                android:layout_below="@+id/text_single_view_Activity"
+                android:src="@drawable/image" />
+
+            <TextView
+                android:id="@+id/text_single_view_Activity"
+                android:layout_width="match_parent"
+                android:layout_height="121dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Nika (Vitex negundo)"
+                android:textColor="@color/black"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textDescription_single_view_Activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="8dp"
+                android:gravity="left"
+                android:layout_below="@id/image_single_view_activity"
+                android:text="Large shrub or small, aromatic tree up to 8 m tall; leaves decussate-opposite; petioles 2.5-6 cm long; leaflets regularly 3 or 3-5, rarely 1; leaflets all distinctinctly petiolate1.5-4 cm wide; corolla blue or pale-blue to lavender pink, or sometimes white; fruit globose or subglobose to subovoid, 3-5.5 mm long and wide, gabrous, purple or black. "
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
