@@ -41,8 +41,6 @@ public class NotesFragment extends Fragment {
         menuBtn = root.findViewById(R.id.menu_btn);
         menuBtn.setOnClickListener((v)->showMenu());
 
-
-
         addNoteBtn.setOnClickListener((v)->{
             getActivity().getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, noteDetailsFragment, "findThisFragment")
