@@ -36,6 +36,8 @@ import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
+    ViewActivity viewActivity = new ViewActivity();
+
     EditText inputSearch;
     RecyclerView recyclerView;
     FirestoreRecyclerOptions<Plant> options;
@@ -137,6 +139,12 @@ public class SearchFragment extends Fragment {
 
 
                         ref = db.collection("Plant").document();
+                        Bundle args = new Bundle();
+                        args.putString("YourKey", getSnapshots().getSnapshot(position).getId());
+                        viewActivity.setArguments(args);
+                        //Inflate the fragment
+                        getFragmentManager().beginTransaction().add(R.id.container, viewActivity).commit();
+
 
 
                     }

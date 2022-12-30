@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.modeldownloader.CustomModel;
@@ -56,11 +57,38 @@ public class DetectFragment extends Fragment {
     ImageView mImageView;
     Button galleryBtn;
     Button cameraBtn;
+    TextView detectText;
+    Button detectBtn;
 
     Uri image_uri;
+    Bitmap bp;
     private static final int RESULT_LOAD_IMAGE = 123;
     public static final int IMAGE_CAPTURE_CODE = 654;
     Detector detector;
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        cameraBtn = view.findViewById(R.id.camera);
+        cameraBtn.setOnClickListener(new View.OnClickListener() { @Override
+        public void onClick(View v) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
+                        getContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                    String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    requestPermissions(permission, 112); }
+                else {
+                    openCamera(); }
+            }
+            else {
+                openCamera(); }
+        }
+        });
+
+
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +97,8 @@ public class DetectFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_detect, container, false);
         mImageView = root.findViewById(R.id.image12);
         galleryBtn = root.findViewById(R.id.gallery);
-        cameraBtn = root.findViewById(R.id.camera);
+
+        detectText = (TextView) root.findViewById(R.id.text_view_id);
         try {
             detector = TFLiteObjectDetectionAPIModel.create(getContext().getApplicationContext(),"modelLeaves.tflite","labelmap.txt", 320,true);
         } catch (IOException e) {
@@ -88,20 +117,7 @@ public class DetectFragment extends Fragment {
             }
         });
 
-        cameraBtn.setOnClickListener(new View.OnClickListener() { @Override
-        public void onClick(View v) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED ||
-                        getContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                    String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                    requestPermissions(permission, 112); }
-                else {
-                    openCamera(); }
-            }
-            else {
-                openCamera(); }
-            }
-        });
+
 
         return root;
     }
@@ -112,13 +128,42 @@ public class DetectFragment extends Fragment {
         if(data.getData()!=null &&  requestCode == RESULT_LOAD_IMAGE && resultCode == Activity.RESULT_OK) {
             image_uri = data.getData();
             doInference();
-
         }
         if (requestCode == IMAGE_CAPTURE_CODE && resultCode == Activity.RESULT_OK){
-            doInference();
+            bp = (Bitmap) data.getExtras().get("data");
+            mImageView.setImageBitmap(bp);
+        }
+    }
+
+    public void doInference1() {
+
+        Bitmap mutable = bp.copy(Bitmap.Config.ARGB_8888, true);
+        Paint p1 = new Paint();
+        p1.setColor(Color.RED);
+        p1.setStyle(Paint.Style.STROKE);
+        p1.setStrokeWidth(4);
+
+        Paint p2 = new Paint();
+        p2.setColor(Color.BLUE);
+        p2.setTextSize(80);
+        Canvas canvas = new Canvas(mutable);
+        List<Detector.Recognition> recognitionList =detector.recognizeImage(bp);
+        String name = "No Leaf";
+        for (Detector.Recognition r:
+                recognitionList) {
+            if (r.getConfidence()>0.5) {
+                Log.d("tryRecognition", r.getTitle() + "  " + r.getConfidence() + "  " + r.getId() + "  " + r.getLocation().toString());
+                canvas.drawRect(r.getLocation(), p1);
+                canvas.drawText(r.getTitle(), r.getLocation().left, r.getLocation().top,p2 );
+                name = r.getTitle();
+            }
         }
 
+        detectText.setText(name+" Detected");
+        mImageView.setImageBitmap(mutable);
     }
+
+
 
     public void doInference() {
         mImageView.setImageURI(image_uri);
@@ -133,28 +178,27 @@ public class DetectFragment extends Fragment {
         Paint p2 = new Paint();
         p2.setColor(Color.BLUE);
         p2.setTextSize(80);
-        p2.setStyle(Paint.Style.STROKE);
-        p2.setStrokeWidth(5);
         Canvas canvas = new Canvas(mutable);
         List<Detector.Recognition> recognitionList =detector.recognizeImage(inputBmp);
+        String name = "No Leaf";
         for (Detector.Recognition r:
         recognitionList) {
-            if (r.getConfidence()>0.9) {
+            if (r.getConfidence()>0.5) {
                 Log.d("tryRecognition", r.getTitle() + "  " + r.getConfidence() + "  " + r.getId() + "  " + r.getLocation().toString());
                 canvas.drawRect(r.getLocation(), p1);
                 canvas.drawText(r.getTitle(), r.getLocation().left, r.getLocation().top,p2 );
+                name = r.getTitle();
             }
         }
+
+        detectText.setText(name+" Detected");
         mImageView.setImageBitmap(mutable);
     }
 
     private void openCamera() {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
-        image_uri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE);
     }
 
