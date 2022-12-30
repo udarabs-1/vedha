@@ -218,6 +218,14 @@ public class DetectFragment extends Fragment {
             }
         }
 
+        if (name == "salad") {
+            name = "Salad Leaves";
+        }
+
+        if (name == "cabbage") {
+            name = "Cabbage Leaves";
+        }
+
         detectText.setText(name+" Detected");
         mImageView.setImageBitmap(mutable);
     }
