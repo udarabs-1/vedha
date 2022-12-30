@@ -2,6 +2,7 @@ package com.example.vedha;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,12 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +69,22 @@ public class NotesFragment extends Fragment {
     }
 
     void showMenu() {
+        PopupMenu popupMenu = new PopupMenu(getContext(), menuBtn);
+        popupMenu.getMenu().add("Logout");
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getTitle() == "Logout") {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getContext(),LoginActivity.class ));
+                    getActivity().finish();
+                    return true;
+
+                }
+                return false;
+            }
+        });
 
     }
 

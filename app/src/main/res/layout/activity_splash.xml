@@ -13,14 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Vedha"
-        android:textSize= "32sp"
+        android:textSize= "70dp"
         android:textColor= "@color/white"
         android:gravity = "center"
         android:textStyle= "bold"/>
-    <ProgressBar
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:indeterminateTint= "@color/white"
-        android:layout_margin= "16dp"/>
 
 </LinearLayout>

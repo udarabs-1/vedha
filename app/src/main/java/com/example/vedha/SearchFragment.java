@@ -13,12 +13,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +50,7 @@ public class SearchFragment extends Fragment {
     ArrayList<Plant> plantArrayList;
     FirebaseFirestore db;
     Query query;
+    ImageButton menuBtn;
     //OnListItemClick onListItemClick;
     DocumentSnapshot snapshot;
 
@@ -57,6 +63,8 @@ public class SearchFragment extends Fragment {
 
 
         View root = inflater.inflate(R.layout.fragment_search, container, false);
+        menuBtn = root.findViewById(R.id.menu_btn);
+        menuBtn.setOnClickListener((v)->showMenu());
         return root;
     }
 
@@ -70,10 +78,31 @@ public class SearchFragment extends Fragment {
 
         inputSearch = view.findViewById(R.id.inputSearch);
         recyclerView = view.findViewById(R.id.recyclerView);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
         recyclerView.setHasFixedSize(true);
 
         EventChangeListner();
+    }
+
+    void showMenu() {
+        PopupMenu popupMenu = new PopupMenu(getContext(), menuBtn);
+        popupMenu.getMenu().add("Logout");
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getTitle() == "Logout") {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getContext(),LoginActivity.class ));
+                    getActivity().finish();
+                    return true;
+
+                }
+                return false;
+            }
+        });
+
     }
 
     private void EventChangeListner() {

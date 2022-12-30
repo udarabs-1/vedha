@@ -25,13 +25,17 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.ml.modeldownloader.CustomModel;
 import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions;
 import com.google.firebase.ml.modeldownloader.DownloadType;
@@ -58,6 +62,7 @@ public class DetectFragment extends Fragment {
     Button galleryBtn;
     Button cameraBtn;
     TextView detectText;
+    ImageButton menuBtn;
     Button detectBtn;
 
     Uri image_uri;
@@ -97,6 +102,8 @@ public class DetectFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_detect, container, false);
         mImageView = root.findViewById(R.id.image12);
         galleryBtn = root.findViewById(R.id.gallery);
+        menuBtn = root.findViewById(R.id.menu_btn);
+        menuBtn.setOnClickListener((v)->showMenu());
 
         detectText = (TextView) root.findViewById(R.id.text_view_id);
         try {
@@ -161,6 +168,26 @@ public class DetectFragment extends Fragment {
 
         detectText.setText(name+" Detected");
         mImageView.setImageBitmap(mutable);
+    }
+
+    void showMenu() {
+        PopupMenu popupMenu = new PopupMenu(getContext(), menuBtn);
+        popupMenu.getMenu().add("Logout");
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getTitle() == "Logout") {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getContext(),LoginActivity.class ));
+                    getActivity().finish();
+                    return true;
+
+                }
+                return false;
+            }
+        });
+
     }
 
 
